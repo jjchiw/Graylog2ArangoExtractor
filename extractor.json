@@ -1,0 +1,73 @@
+{
+  "extractors": [
+    {
+      "condition_type": "string",
+      "condition_value": "",
+      "converters": [],
+      "cursor_strategy": "copy",
+      "extractor_config": {
+        "regex_value": "[cpp,h]:[0-9]+\\](.*)$"
+      },
+      "extractor_type": "regex",
+      "order": 1,
+      "source_field": "message",
+      "target_field": "ArangoMessage",
+      "title": "ArangoTraceMessageExtractor"
+    },
+    {
+      "condition_type": "string",
+      "condition_value": "",
+      "converters": [],
+      "cursor_strategy": "copy",
+      "extractor_config": {
+        "regex_value": "generated code: (.*)$"
+      },
+      "extractor_type": "regex",
+      "order": 3,
+      "source_field": "ArangoMessage",
+      "target_field": "GeneratedCode",
+      "title": "ArangoTraceGeneratedCodeExtractor"
+    },
+    {
+      "condition_type": "string",
+      "condition_value": "",
+      "converters": [],
+      "cursor_strategy": "copy",
+      "extractor_config": {
+        "regex_value": "HTTP READ|WRITE FOR [0-9xa-f]+: (.*)$"
+      },
+      "extractor_type": "regex",
+      "order": 2,
+      "source_field": "ArangoMessage",
+      "target_field": "HttpResponse",
+      "title": "ArangoTraceResponseExtractor"
+    },
+    {
+      "condition_type": "regex",
+      "condition_value": "",
+      "converters": [
+        {
+          "config": {
+            "quote_char": "\"",
+            "column_header": "Request,IPAddress,Method,Http,ResponseCode,Col1,Col2,Url",
+            "strict_quotes": false,
+            "trim_leading_whitespace": false,
+            "escape_char": "\\",
+            "separator": ","
+          },
+          "type": "csv"
+        }
+      ],
+      "cursor_strategy": "copy",
+      "extractor_config": {
+        "regex_value": "\\[[0-9]+\\] INFO ,*(.*)$"
+      },
+      "extractor_type": "regex",
+      "order": 0,
+      "source_field": "message",
+      "target_field": "ArangoMessage",
+      "title": "ArangoInfoMessageExtractor"
+    }
+  ],
+  "version": "0.91.3"
+}
